@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTEC Business Finance Quiz</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; }
+        .card { background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .btn { background: #007bff; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 16px; }
+        .btn:hover { background: #0056b3; }
+        .btn:disabled { background: #ccc; cursor: not-allowed; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; margin: 10px 0; }
+        .formula-item { display: flex; align-items: center; padding: 15px; border: 1px solid #ddd; border-radius: 6px; margin: 10px 0; }
+        .formula-item:hover { background: #f8f9fa; }
+        .progress { width: 100%; height: 8px; background: #e9ecef; border-radius: 4px; margin: 20px 0; }
+        .progress-bar { height: 100%; background: #007bff; border-radius: 4px; transition: width 0.3s; }
+        .result { padding: 15px; margin: 10px 0; border-radius: 6px; }
+        .correct { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .incorrect { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        h1, h2 { color: #333; margin-bottom: 20px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div id="welcome" class="card">
+            <h1>BTEC Business Finance Quiz</h1>
+            <p>Practice financial calculations with scenario-based questions.</p>
+            <input type="text" id="studentName" placeholder="Enter your name" />
+            <button class="btn" onclick="startQuiz()">Start Quiz</button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz" class="card hidden">
+            <div class="progress">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <h2 id="questionTitle"></h2>
+            <p id="questionText"></p>
+            <input type="number" id="answer" placeholder="Enter your answer" step="0.01" />
+            <button class="btn" onclick="nextQuestion()">Next Question</button>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results" class="card hidden">
+            <h2>Quiz Complete!</h2>
+            <div id="resultsContent"></div>
+            <button class="btn" onclick="restartQuiz()">Try Again</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { formula: "Gross Profit", scenario: "A shop sells goods for £500 and the cost of goods sold is £300. Calculate the gross profit.", answer: 200 },
+            { formula: "Net Profit", scenario: "A business has gross profit of £1000 and expenses of £400. Calculate the net profit.", answer: 600 },
+            { formula: "Break-even Point", scenario: "Fixed costs are £2000, selling price per unit is £50, variable cost per unit is £30. Calculate break-even point in units.", answer: 100 },
+            { formula: "Cash Flow", scenario: "Opening balance £500, cash in £800, cash out £600. Calculate closing balance.", answer: 700 },
+            { formula: "ROI", scenario: "Investment of £1000 generates profit of £200. Calculate ROI as a percentage.", answer: 20 }
+        ];
+
+        let currentQuestion = 0;
+        let studentAnswers = [];
+        let studentName = '';
+
+        function startQuiz() {
+            studentName = document.getElementById('studentName').value;
+            if (!studentName) {
+                alert('Please enter your name');
+                return;
+            }
+            document.getElementById('welcome').classList.add('hidden');
+            document.getElementById('quiz').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('questionTitle').textContent = `Question ${currentQuestion + 1} of ${questions.length}: ${q.formula}`;
+            document.getElementById('questionText').textContent = q.scenario;
+            document.getElementById('answer').value = '';
+            updateProgress();
+        }
+
+        function nextQuestion() {
+            const answer = parseFloat(document.getElementById('answer').value);
+            if (isNaN(answer)) {
+                alert('Please enter a valid number');
+                return;
+            }
+
+            studentAnswers.push(answer);
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function showResults() {
+            document.getElementById('quiz').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+
+            let correct = 0;
+            let resultsHTML = `<h3>Results for ${studentName}</h3>`;
+
+            questions.forEach((q, i) => {
+                const isCorrect = Math.abs(studentAnswers[i] - q.answer) < 0.01;
+                if (isCorrect) correct++;
+                
+                resultsHTML += `
+                    <div class="result ${isCorrect ? 'correct' : 'incorrect'}">
+                        <strong>${q.formula}:</strong> ${q.scenario}<br>
+                        Your answer: £${studentAnswers[i]} | Correct answer: £${q.answer}
+                        ${isCorrect ? ' ✓' : ' ✗'}
+                    </div>
+                `;
+            });
+
+            resultsHTML += `<h3>Score: ${correct}/${questions.length} (${Math.round(correct/questions.length*100)}%)</h3>`;
+            document.getElementById('resultsContent').innerHTML = resultsHTML;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            studentAnswers = [];
+            document.getElementById('results').classList.add('hidden');
+            document.getElementById('welcome').classList.remove('hidden');
+            document.getElementById('studentName').value = '';
+        }
+
+        // Allow Enter key to submit answers
+        document.getElementById('answer').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') nextQuestion();
+        });
+    </script>
+</body>
+</html>
