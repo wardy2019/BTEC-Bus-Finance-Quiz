@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTEC Business Finance Quiz</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            80% { transform: translateY(-5px); }
+        }
+        
+        .bounce { animation: bounce 1s; }
+        
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            font-size: 16px;
+            margin: 15px 0;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .formula-selector {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .formula-category {
+            margin-bottom: 25px;
+        }
+        
+        .category-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .formula-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .formula-item:hover {
+            border-color: #667eea;
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        }
+        
+        .formula-item.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+        
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #667eea;
+            border-radius: 4px;
+            margin-right: 15px;
+            margin-top: 2px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .checkbox.checked {
+            background: #667eea;
+        }
+        
+        .checkbox.checked::after {
+            content: '✓';
+            color: white;
+            position: absolute;
+            top: -2px;
+            left: 3px;
+            font-weight: bold;
+        }
+        
+        .formula-content {
+            flex: 1;
+        }
+        
+        .formula-name {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .formula-text {
+            color: #666;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .progress-container {
+            margin: 20px 0;
+        }
+        
+        .progress {
+            width: 100%;
+            height: 12px;
+            background: #e9ecef;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .question-container {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .question-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .question-title {
+            font-size: 0.8em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #667eea;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .question-text {
+            font-size: 1.3em;
+            line-height: 1.5;
+            color: #333;
+        }
+        
+        .fun-fact {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            animation: bounce 1s;
+        }
+        
+        .fun-fact-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        .fun-fact-text {
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .results-grid {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .result-item {
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid;
+        }
+        
+        .result-correct {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+        
+        .result-incorrect {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+        
+        .result-formula {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .result-scenario {
+            margin-bottom: 10px;
+            color: #666;
+        }
+        
+        .result-answers {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+        }
+        
+        .workings-section {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+        }
+        
+        .workings-text {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+            margin: 10px 0 0 0;
+            white-space: pre-wrap;
+            color: #333;
+        }
+        
+        .success-message {
+            margin-top: 10px;
+            padding: 10px;
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            color: #0c5460;
+        }
+        
+        .formula-display, .hint-display {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .retry-section {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        
+        .score-summary {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .score-number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .score-text {
+            font-size: 1.2em;
+            color: #666;
+        }
+        
+        .hidden { display: none; }
+        
+        .selection-summary {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .card { padding: 20px; }
+            h1 { font-size: 2em; }
+            .question-text { font-size: 1.1em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div id="welcome" class="card">
+            <h1>🎯 BTEC Business Finance Quiz</h1>
+            <p class="subtitle">Master financial calculations with interactive scenarios and instant feedback</p>
+            <input type="text" id="studentName" placeholder="Enter your name to get started" />
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" onclick="showFormulaSelector()">Choose Your Challenge</button>
+            </div>
+        </div>
+
+        <!-- Formula Selector -->
+        <div id="formulaSelector" class="card hidden">
+            <h2>Select Formulas to Practice</h2>
+            <p class="subtitle">Choose one or more areas to focus on. You'll get 15 questions based on your selection.</p>
+            
+            <div class="selection-summary">
+                <span id="selectionCount">0 formulas selected</span>
+                <button class="btn btn-secondary" onclick="toggleSelectAll()">Select All</button>
+            </div>
+            
+            <div id="formulaCategories"></div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" id="startQuizBtn" onclick="startQuiz()" disabled>Start Quiz</button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz" class="card hidden">
+            <div class="progress-container">
+                <div class="progress">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
+                <div class="progress-text" id="progressText"></div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question-meta">
+                    <span id="questionNumber"></span>
+                    <span id="questionCategory"></span>
+                </div>
+                <div class="question-title" id="questionTitle"></div>
+                <div class="question-text" id="questionText"></div>
+            </div>
+            
+            <input type="number" id="answer" placeholder="Enter your answer (numbers only)" step="0.01" />
+            <p style="color: #666; font-size: 0.9em; margin-bottom: 10px;">💡 Round to 2 decimal places where needed</p>
+            
+            <div style="text-align: center; margin-bottom: 20px;">
+                <button class="btn btn-secondary" id="showFormulaBtn" onclick="toggleFormula()" style="margin-right: 10px;">Show Formula</button>
+                <button class="btn btn-secondary" id="hintBtn" onclick="showHint()" style="margin-right: 10px;">Need Help?</button>
+            </div>
+            
+            <div id="formulaDisplay" class="formula-display hidden">
+                <strong>Formula:</strong> <span id="currentFormula"></span>
+            </div>
+            
+            <div id="hintDisplay" class="hint-display hidden">
+                <strong>Hint:</strong> <span id="currentHint"></span>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="btn" id="nextBtn" onclick="nextQuestion()">Next Question →</button>
+            </div>
+        </div>
+
+        <!-- Fun Fact Screen -->
+        <div id="funFact" class="card hidden">
+            <div class="fun-fact">
+                <div class="fun-fact-icon">💡</div>
+                <div class="fun-fact-text" id="funFactText"></div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results" class="card hidden">
+            <h2>🎉 Quiz Complete!</h2>
+            
+            <div class="score-summary">
+                <div class="score-number" id="finalScore"></div>
+                <div class="score-text" id="scoreText"></div>
+            </div>
+            
+            <div class="results-grid" id="resultsGrid"></div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" onclick="printResults()" style="margin-right: 10px;">Print Results</button>
+                <button class="btn" onclick="restartQuiz()">Try Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data
+        const formulae = [
+            { id: 1, name: "Total Variable Costs", formula: "Number of Items Made × Variable Cost per Unit", category: "Costs" },
+            { id: 2, name: "Total Costs", formula: "Fixed Costs + Total Variable Costs", category: "Costs" },
+            { id: 3, name: "Revenue", formula: "Number of Sales × Price per Unit", category: "Revenue" },
+            { id: 4, name: "Total Profit", formula: "Total Revenue – Total Cost", category: "Profit" },
+            { id: 5, name: "Gross Profit", formula: "Revenue – Cost of Sales", category: "Profit" },
+            { id: 6, name: "Net Profit", formula: "Gross Profit – Expenditure", category: "Profit" },
+            { id: 7, name: "Breakeven Point", formula: "Fixed Costs ÷ (Selling Price per Unit – Variable Cost per Unit)", category: "Breakeven" },
+            { id: 8, name: "Gross Profit Margin", formula: "(Gross Profit ÷ Total Revenue) × 100", category: "Margins" },
+            { id: 9, name: "Net Profit Margin", formula: "(Net Profit ÷ Total Revenue) × 100", category: "Margins" },
+            { id: 10, name: "Working Capital", formula: "Current Assets – Current Liabilities", category: "Capital" },
+            { id: 11, name: "Current Ratio", formula: "Current Assets ÷ Current Liabilities", category: "Ratios" },
+            { id: 12, name: "Liquid Capital Ratio", formula: "(Current Assets – Inventory) ÷ Current Liabilities", category: "Ratios" }
+        ];
+
+        const funFacts = [
+            "💡 Apple generates over £300 billion in annual revenue - that's more than the GDP of countries like Portugal!",
+            "💡 Netflix's costs are mainly fixed. Once a show is made, streaming it to 1 million vs 10 million viewers costs roughly the same.",
+            "💡 Tesla's breakeven point dropped as they scaled production. Fixed costs spread thinner across more cars.",
+            "💡 Coffee shops have 80%+ gross margins on coffee but net margins drop to 10-15% after rent and staff costs.",
+            "💡 Amazon often has negative working capital - customers pay upfront, but Amazon pays suppliers later!",
+            "💡 During COVID, restaurants with high breakeven points closed, while those with lower breakeven survived on takeaway.",
+            "💡 Luxury brands like Gucci have 60%+ gross profit margins because people pay premium prices for the brand.",
+            "💡 Most startups take 2-3 years to break even. Uber took over 10 years but investors believed in future profits!"
+        ];
+
+        // State
+        let selectedFormulae = [];
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let studentAnswers = [];
+        let studentName = '';
+
+        // Initialize
+        function showFormulaSelector() {
+            studentName = document.getElementById('studentName').value.trim();
+            if (!studentName) {
+                alert('Please enter your name first!');
+                return;
+            }
+            
+            document.getElementById('welcome').classList.add('hidden');
+            document.getElementById('formulaSelector').classList.remove('hidden');
+            renderFormulaSelector();
+        }
+
+        function renderFormulaSelector() {
+            const categories = [...new Set(formulae.map(f => f.category))];
+            const container = document.getElementById('formulaCategories');
+            
+            container.innerHTML = categories.map(category => `
+                <div class="formula-category">
+                    <div class="category-title">${category}</div>
+                    ${formulae.filter(f => f.category === category).map(formula => `
+                        <div class="formula-item" onclick="toggleFormula(${formula.id})">
+                            <div class="checkbox" id="checkbox-${formula.id}"></div>
+                            <div class="formula-content">
+                                <div class="formula-name">${formula.name}</div>
+                                <div class="formula-text">${formula.formula}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+        }
+
+        function toggleFormula(id) {
+            if (selectedFormulae.includes(id)) {
+                selectedFormulae = selectedFormulae.filter(fid => fid !== id);
+            } else {
+                selectedFormulae.push(id);
+            }
+            updateFormulaSelection();
+        }
+
+        function toggleSelectAll() {
+            if (selectedFormulae.length === formulae.length) {
+                selectedFormulae = [];
+            } else {
+                selectedFormulae = formulae.map(f => f.id);
+            }
+            updateFormulaSelection();
+        }
+
+        function updateFormulaSelection() {
+            // Update checkboxes
+            formulae.forEach(formula => {
+                const checkbox = document.getElementById(`checkbox-${formula.id}`);
+                const item = checkbox.parentElement;
+                
+                if (selectedFormulae.includes(formula.id)) {
+                    checkbox.classList.add('checked');
+                    item.classList.add('selected');
+                } else {
+                    checkbox.classList.remove('checked');
+                    item.classList.remove('selected');
+                }
+            });
+            
+            // Update selection count
+            document.getElementById('selectionCount').textContent = 
+                `${selectedFormulae.length} formula${selectedFormulae.length !== 1 ? 's' : ''} selected`;
+            
+            // Update start button
+            const startBtn = document.getElementById('startQuizBtn');
+            startBtn.disabled = selectedFormulae.length === 0;
+            startBtn.textContent = selectedFormulae.length === 0 ? 'Select at least one formula' : 
+                `Start Quiz (${selectedFormulae.length} formula${selectedFormulae.length !== 1 ? 's' : ''})`;
+        }
+
+        function generateQuestions() {
+            const questions = [];
+            const selectedFormulaeData = formulae.filter(f => selectedFormulae.includes(f.id));
+            
+            // Generate 15 questions with difficulty progression
+            for (let i = 0; i < 15; i++) {
+                const formula = selectedFormulaeData[i % selectedFormulaeData.length];
+                const question = generateQuestion(formula);
+                
+                // Add difficulty level for progression
+                question.difficulty = i < 5 ? 'easy' : i < 10 ? 'medium' : 'hard';
+                questions.push(question);
+            }
+            
+            return questions;
+        }
+
+        function generateQuestion(formula) {
+            // Generate questions with stored values for workings
+            const scenarios = {
+                1: () => { // Total Variable Costs
+                    const items = rand(50, 200);
+                    const costPerUnit = rand(1, 3, 2);
+                    return {
+                        scenario: `A bakery makes ${items} cupcakes. Each cupcake costs £${costPerUnit} in ingredients. Calculate the total variable costs.`,
+                        answer: parseFloat((items * costPerUnit).toFixed(2)),
+                        workings: `Step 1: Identify the formula\nTotal Variable Costs = Number of Items × Variable Cost per Unit\n\nStep 2: Insert the values\nTotal Variable Costs = ${items} × £${costPerUnit}\n\nStep 3: Calculate\nTotal Variable Costs = £${(items * costPerUnit).toFixed(2)}`
+                    };
+                },
+                2: () => { // Total Costs
+                    const fixed = rand(1000, 5000);
+                    const quantity = rand(100, 500);
+                    const costPerUnit = rand(2, 8, 2);
+                    const totalVariable = quantity * costPerUnit;
+                    const totalCosts = fixed + totalVariable;
+                    return {
+                        scenario: `A factory has fixed costs of £${fixed}. They make ${quantity} units at £${costPerUnit} variable cost per unit. Calculate the total costs.`,
+                        answer: parseFloat(totalCosts.toFixed(2)),
+                        workings: `Step 1: Calculate total variable costs\nTotal Variable Costs = Quantity × Cost per Unit\nTotal Variable Costs = ${quantity} × £${costPerUnit} = £${totalVariable.toFixed(2)}\n\nStep 2: Apply the total costs formula\nTotal Costs = Fixed Costs + Total Variable Costs\nTotal Costs = £${fixed} + £${totalVariable.toFixed(2)}\n\nStep 3: Calculate final answer\nTotal Costs = £${totalCosts.toFixed(2)}`
+                    };
+                },
+                3: () => { // Revenue
+                    const items = rand(100, 500);
+                    const price = rand(10, 50);
+                    return {
+                        scenario: `A store sells ${items} items at £${price} each. Calculate the total revenue.`,
+                        answer: parseFloat((items * price).toFixed(2)),
+                        workings: `Step 1: Identify the formula\nRevenue = Number of Sales × Price per Unit\n\nStep 2: Insert the values\nRevenue = ${items} × £${price}\n\nStep 3: Calculate\nRevenue = £${(items * price).toFixed(2)}`
+                    };
+                },
+                4: () => { // Total Profit
+                    const quantity = rand(200, 800);
+                    const sellingPrice = rand(15, 40);
+                    const fixedCosts = rand(2000, 6000);
+                    const variableCostPerUnit = rand(5, 20, 2);
+                    
+                    const totalRevenue = quantity * sellingPrice;
+                    const totalVariableCosts = quantity * variableCostPerUnit;
+                    const totalCosts = fixedCosts + totalVariableCosts;
+                    const totalProfit = totalRevenue - totalCosts;
+                    
+                    return {
+                        scenario: `A company sells ${quantity} products at £${sellingPrice} each. Fixed costs are £${fixedCosts} and variable cost per unit is £${variableCostPerUnit}. Calculate the total profit.`,
+                        answer: parseFloat(totalProfit.toFixed(2)),
+                        workings: `Step 1: Calculate total revenue\nTotal Revenue = Quantity × Selling Price\nTotal Revenue = ${quantity} × £${sellingPrice} = £${totalRevenue.toFixed(2)}\n\nStep 2: Calculate total variable costs\nTotal Variable Costs = Quantity × Variable Cost per Unit\nTotal Variable Costs = ${quantity} × £${variableCostPerUnit} = £${totalVariableCosts.toFixed(2)}\n\nStep 3: Calculate total costs\nTotal Costs = Fixed Costs + Total Variable Costs\nTotal Costs = £${fixedCosts} + £${totalVariableCosts.toFixed(2)} = £${totalCosts.toFixed(2)}\n\nStep 4: Calculate total profit\nTotal Profit = Total Revenue - Total Costs\nTotal Profit = £${totalRevenue.toFixed(2)} - £${totalCosts.toFixed(2)} = £${totalProfit.toFixed(2)}`
+                    };
+                },
+                5: () => { // Gross Profit
+                    const quantity = rand(300, 700);
+                    const sellingPrice = rand(20, 60);
+                    const costPerUnit = rand(8, 30, 2);
+                    
+                    const totalRevenue = quantity * sellingPrice;
+                    const totalCostOfSales = quantity * costPerUnit;
+                    const grossProfit = totalRevenue - totalCostOfSales;
+                    
+                    return {
+                        scenario: `A shop sells ${quantity} items at £${sellingPrice} each. The cost of each item is £${costPerUnit}. Calculate the gross profit.`,
+                        answer: parseFloat(grossProfit.toFixed(2)),
+                        workings: `Step 1: Calculate total revenue\nTotal Revenue = Quantity × Selling Price\nTotal Revenue = ${quantity} × £${sellingPrice} = £${totalRevenue.toFixed(2)}\n\nStep 2: Calculate total cost of sales\nTotal Cost of Sales = Quantity × Cost per Unit\nTotal Cost of Sales = ${quantity} × £${costPerUnit} = £${totalCostOfSales.toFixed(2)}\n\nStep 3: Calculate gross profit\nGross Profit = Total Revenue - Total Cost of Sales\nGross Profit = £${totalRevenue.toFixed(2)} - £${totalCostOfSales.toFixed(2)} = £${grossProfit.toFixed(2)}`
+                    };
+                },
+                6: () => { // Net Profit
+                    const quantity = rand(400, 900);
+                    const sellingPrice = rand(25, 50);
+                    const costPerUnit = rand(10, 25, 2);
+                    const expenses = rand(3000, 8000);
+                    
+                    const revenue = quantity * sellingPrice;
+                    const costOfSales = quantity * costPerUnit;
+                    const grossProfit = revenue - costOfSales;
+                    const netProfit = grossProfit - expenses;
+                    
+                    return {
+                        scenario: `A business sells ${quantity} products at £${sellingPrice} each. Cost per product is £${costPerUnit}. Total expenses are £${expenses}. Calculate net profit.`,
+                        answer: parseFloat(netProfit.toFixed(2)),
+                        workings: `Step 1: Calculate revenue\nRevenue = ${quantity} × £${sellingPrice} = £${revenue.toFixed(2)}\n\nStep 2: Calculate cost of sales\nCost of Sales = ${quantity} × £${costPerUnit} = £${costOfSales.toFixed(2)}\n\nStep 3: Calculate gross profit\nGross Profit = Revenue - Cost of Sales\nGross Profit = £${revenue.toFixed(2)} - £${costOfSales.toFixed(2)} = £${grossProfit.toFixed(2)}\n\nStep 4: Calculate net profit\nNet Profit = Gross Profit - Expenses\nNet Profit = £${grossProfit.toFixed(2)} - £${expenses} = £${netProfit.toFixed(2)}`
+                    };
+                },
+                7: () => { // Breakeven Point
+                    const fixed = rand(2000, 8000);
+                    const selling = rand(20, 80);
+                    const variable = rand(10, 40);
+                    const contribution = selling - variable;
+                    const breakeven = Math.round(fixed / contribution);
+                    return {
+                        scenario: `Fixed costs are £${fixed}, selling price per unit is £${selling}, variable cost per unit is £${variable}. Calculate breakeven point in units.`,
+                        answer: breakeven,
+                        workings: `Step 1: Identify the formula\nBreakeven Point = Fixed Costs ÷ (Selling Price per Unit - Variable Cost per Unit)\n\nStep 2: Calculate contribution per unit\nContribution per Unit = £${selling} - £${variable} = £${contribution}\n\nStep 3: Insert the values\nBreakeven Point = £${fixed} ÷ £${contribution}\n\nStep 4: Calculate\nBreakeven Point = ${breakeven} units`
+                    };
+                },
+                8: () => { // Gross Profit Margin
+                    const revenue = rand(10000, 50000);
+                    const costOfSales = rand(4000, 25000);
+                    const grossProfit = revenue - costOfSales;
+                    const margin = (grossProfit / revenue) * 100;
+                    
+                    return {
+                        scenario: `A company has revenue of £${revenue} and cost of sales of £${costOfSales}. Calculate the gross profit margin as a percentage.`,
+                        answer: parseFloat(margin.toFixed(2)),
+                        workings: `Step 1: Calculate gross profit\nGross Profit = Revenue - Cost of Sales\nGross Profit = £${revenue} - £${costOfSales} = £${grossProfit}\n\nStep 2: Apply the margin formula\nGross Profit Margin = (Gross Profit ÷ Revenue) × 100\nGross Profit Margin = (£${grossProfit} ÷ £${revenue}) × 100\n\nStep 3: Calculate\nGross Profit Margin = ${(grossProfit/revenue).toFixed(4)} × 100 = ${margin.toFixed(2)}%`
+                    };
+                },
+                9: () => { // Net Profit Margin
+                    const revenue = rand(15000, 60000);
+                    const netProfit = rand(2000, 12000);
+                    const margin = (netProfit / revenue) * 100;
+                    
+                    return {
+                        scenario: `A business has revenue of £${revenue} and net profit of £${netProfit}. Calculate the net profit margin as a percentage.`,
+                        answer: parseFloat(margin.toFixed(2)),
+                        workings: `Step 1: Apply the net profit margin formula\nNet Profit Margin = (Net Profit ÷ Revenue) × 100\n\nStep 2: Insert the values\nNet Profit Margin = (£${netProfit} ÷ £${revenue}) × 100\n\nStep 3: Calculate\nNet Profit Margin = ${(netProfit/revenue).toFixed(4)} × 100 = ${margin.toFixed(2)}%`
+                    };
+                },
+                10: () => { // Working Capital
+                    const currentAssets = rand(15000, 80000);
+                    const currentLiabilities = rand(8000, 40000);
+                    const workingCapital = currentAssets - currentLiabilities;
+                    
+                    return {
+                        scenario: `A company has current assets of £${currentAssets} and current liabilities of £${currentLiabilities}. Calculate the working capital.`,
+                        answer: parseFloat(workingCapital.toFixed(2)),
+                        workings: `Step 1: Apply the working capital formula\nWorking Capital = Current Assets - Current Liabilities\n\nStep 2: Insert the values\nWorking Capital = £${currentAssets} - £${currentLiabilities}\n\nStep 3: Calculate\nWorking Capital = £${workingCapital.toFixed(2)}`
+                    };
+                },
+                11: () => { // Current Ratio
+                    const currentAssets = rand(20000, 100000);
+                    const currentLiabilities = rand(10000, 50000);
+                    const ratio = currentAssets / currentLiabilities;
+                    
+                    return {
+                        scenario: `A business has current assets of £${currentAssets} and current liabilities of £${currentLiabilities}. Calculate the current ratio.`,
+                        answer: parseFloat(ratio.toFixed(2)),
+                        workings: `Step 1: Apply the current ratio formula\nCurrent Ratio = Current Assets ÷ Current Liabilities\n\nStep 2: Insert the values\nCurrent Ratio = £${currentAssets} ÷ £${currentLiabilities}\n\nStep 3: Calculate\nCurrent Ratio = ${ratio.toFixed(2)}`
+                    };
+                },
+                12: () => { // Liquid Capital Ratio
+                    const currentAssets = rand(25000, 120000);
+                    const inventory = rand(5000, 30000);
+                    const currentLiabilities = rand(15000, 60000);
+                    const liquidAssets = currentAssets - inventory;
+                    const ratio = liquidAssets / currentLiabilities;
+                    
+                    return {
+                        scenario: `A company has current assets of £${currentAssets}, inventory of £${inventory}, and current liabilities of £${currentLiabilities}. Calculate the liquid capital ratio.`,
+                        answer: parseFloat(ratio.toFixed(2)),
+                        workings: `Step 1: Calculate liquid assets\nLiquid Assets = Current Assets - Inventory\nLiquid Assets = £${currentAssets} - £${inventory} = £${liquidAssets}\n\nStep 2: Apply the liquid capital ratio formula\nLiquid Capital Ratio = Liquid Assets ÷ Current Liabilities\n\nStep 3: Insert the values and calculate\nLiquid Capital Ratio = £${liquidAssets} ÷ £${currentLiabilities} = ${ratio.toFixed(2)}`
+                    };
+                }
+            };
+            
+            const generator = scenarios[formula.id] || (() => ({
+                scenario: `Calculate using the ${formula.name} formula: ${formula.formula}`,
+                answer: rand(100, 1000),
+                workings: `Use the formula: ${formula.formula}`
+            }));
+            
+            const question = generator();
+            return {
+                ...question,
+                formulaId: formula.id,
+                formulaName: formula.name,
+                category: formula.category
+            };
+        }
+
+        function rand(min, max, decimals = 0) {
+            const num = Math.random() * (max - min) + min;
+            return decimals > 0 ? parseFloat(num.toFixed(decimals)) : Math.round(num);
+        }
+
+        function startQuiz() {
+            currentQuestions = generateQuestions();
+            currentQuestionIndex = 0;
+            studentAnswers = [];
+            
+            document.getElementById('formulaSelector').classList.add('hidden');
+            document.getElementById('quiz').classList.remove('hidden');
+            
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = currentQuestions[currentQuestionIndex];
+            const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+            
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = 
+                `Question ${currentQuestionIndex + 1} of ${currentQuestions.length}`;
+            
+            document.getElementById('questionNumber').textContent = 
+                `Question ${currentQuestionIndex + 1}`;
+            document.getElementById('questionCategory').textContent = question.category;
+            document.getElementById('questionTitle').textContent = question.formulaName;
+            document.getElementById('questionText').textContent = question.scenario;
+            
+            // Store current formula for show/hide
+            const formula = formulae.find(f => f.id === question.formulaId);
+            document.getElementById('currentFormula').textContent = formula.formula;
+            
+            // Generate hint based on question type
+            generateHint(question);
+            
+            // Reset displays
+            document.getElementById('formulaDisplay').classList.add('hidden');
+            document.getElementById('hintDisplay').classList.add('hidden');
+            
+            document.getElementById('answer').value = '';
+            document.getElementById('answer').focus();
+            
+            // Update next button
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.textContent = currentQuestionIndex < currentQuestions.length - 1 ? 
+                'Next Question →' : 'See Results 🎉';
+            
+            // Save progress
+            saveProgress();
+        }
+
+        function nextQuestion() {
+            const answer = parseFloat(document.getElementById('answer').value);
+            if (isNaN(answer)) {
+                alert('Please enter a valid number!');
+                return;
+            }
+            
+            studentAnswers.push(answer);
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < currentQuestions.length) {
+                // Show fun fact every 5 questions
+                if (currentQuestionIndex % 5 === 0) {
+                    showFunFact();
+                } else {
+                    showQuestion();
+                }
+            } else {
+                showResults();
+            }
+        }
+
+        function showFunFact() {
+            const fact = funFacts[Math.floor(Math.random() * funFacts.length)];
+            document.getElementById('funFactText').textContent = fact;
+            
+            document.getElementById('quiz').classList.add('hidden');
+            document.getElementById('funFact').classList.remove('hidden');
+            
+            setTimeout(() => {
+                document.getElementById('funFact').classList.add('hidden');
+                document.getElementById('quiz').classList.remove('hidden');
+                showQuestion();
+            }, 7000); // Increased from 4000 to 7000ms
+        }
+
+        function showResults() {
+            document.getElementById('quiz').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+            
+            let correct = 0;
+            const resultsHTML = currentQuestions.map((question, i) => {
+                const studentAnswer = parseFloat(studentAnswers[i]).toFixed(2);
+                const correctAnswer = parseFloat(question.answer).toFixed(2);
+                const isCorrect = Math.abs(parseFloat(studentAnswer) - parseFloat(correctAnswer)) < 0.01;
+                if (isCorrect) correct++;
+                
+                return `
+                    <div class="result-item ${isCorrect ? 'result-correct' : 'result-incorrect'}">
+                        <div class="result-formula">${question.formulaName}</div>
+                        <div class="result-scenario">${question.scenario}</div>
+                        <div class="result-answers">
+                            <span>Your answer: £${studentAnswer}</span>
+                            <span>Correct: £${correctAnswer} ${isCorrect ? '✅' : '❌'}</span>
+                        </div>
+                        ${!isCorrect ? `
+                            <div class="workings-section">
+                                <strong>Don't worry ${studentName}! Here's how to get it right:</strong>
+                                <pre class="workings-text">${question.workings}</pre>
+                                <div class="retry-section">
+                                    <button class="btn btn-small" onclick="retryQuestion(${i})">Try This Question Again</button>
+                                </div>
+                            </div>
+                        ` : `
+                            <div class="success-message">
+                                <strong>Well done ${studentName}! You got this one right! 🎉</strong>
+                            </div>
+                        `}
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('resultsGrid').innerHTML = resultsHTML;
+            
+            const percentage = Math.round((correct / currentQuestions.length) * 100);
+            const grade = getGrade(percentage);
+            document.getElementById('finalScore').textContent = `${percentage}%`;
+            document.getElementById('scoreText').textContent = 
+                `${studentName}, you got ${correct} out of ${currentQuestions.length} correct • ${grade} • ${getScoreMessage(percentage)}`;
+        }
+
+        function getGrade(percentage) {
+            if (percentage >= 75) return "DISTINCTION";
+            if (percentage >= 60) return "MERIT";
+            if (percentage >= 45) return "PASS";
+            return "UNGRADED";
+        }
+        
+        function getScoreMessage(percentage) {
+            if (percentage >= 90) return "Outstanding work! 🌟";
+            if (percentage >= 80) return "Excellent! 🎯";
+            if (percentage >= 70) return "Good job! 👍";
+            if (percentage >= 60) return "Keep practicing! 📚";
+            if (percentage >= 45) return "You're getting there! 💪";
+            return "Don't give up - practice makes perfect! 🎯";
+        }
+
+        function toggleFormula() {
+            const display = document.getElementById('formulaDisplay');
+            display.classList.toggle('hidden');
+        }
+        
+        function showHint() {
+            const display = document.getElementById('hintDisplay');
+            display.classList.toggle('hidden');
+        }
+        
+        function generateHint(question) {
+            const hints = {
+                1: "Start by multiplying the number of items by the cost per item.",
+                2: "First calculate the total variable costs, then add the fixed costs.",
+                3: "Multiply the number of sales by the price per unit.",
+                4: "Work out revenue first, then total costs, then subtract costs from revenue.",
+                5: "Calculate revenue first, then cost of sales, then subtract.",
+                6: "Calculate gross profit first, then subtract expenses.",
+                7: "Find the contribution per unit first (selling price - variable cost).",
+                8: "Calculate gross profit first, then divide by revenue and multiply by 100.",
+                9: "Divide net profit by revenue, then multiply by 100 for percentage.",
+                10: "Simply subtract current liabilities from current assets.",
+                11: "Divide current assets by current liabilities.",
+                12: "Subtract inventory from current assets first, then divide by current liabilities."
+            };
+            
+            document.getElementById('currentHint').textContent = hints[question.formulaId] || "Break the problem into smaller steps.";
+        }
+        
+        function retryQuestion(questionIndex) {
+            // Set up retry mode
+            currentQuestionIndex = questionIndex;
+            studentAnswers = studentAnswers.slice(0, questionIndex); // Remove answers after this point
+            
+            // Go back to quiz
+            document.getElementById('results').classList.add('hidden');
+            document.getElementById('quiz').classList.remove('hidden');
+            showQuestion();
+        }
+        
+        function saveProgress() {
+            const progress = {
+                studentName,
+                selectedFormulae,
+                currentQuestionIndex,
+                studentAnswers,
+                currentQuestions
+            };
+            localStorage.setItem('btecQuizProgress', JSON.stringify(progress));
+        }
+        
+        function loadProgress() {
+            const saved = localStorage.getItem('btecQuizProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                if (confirm(`Continue your previous quiz as ${progress.studentName}?`)) {
+                    studentName = progress.studentName;
+                    selectedFormulae = progress.selectedFormulae;
+                    currentQuestionIndex = progress.currentQuestionIndex;
+                    studentAnswers = progress.studentAnswers;
+                    currentQuestions = progress.currentQuestions;
+                    
+                    document.getElementById('welcome').classList.add('hidden');
+                    document.getElementById('quiz').classList.remove('hidden');
+                    showQuestion();
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        function clearProgress() {
+            localStorage.removeItem('btecQuizProgress');
+        }
+        
+        function printResults() {
+            window.print();
+        }
+        
+        // Initialize on page load
+        window.onload = function() {
+            loadProgress();
+        };
+
+        function restartQuiz() {
+            selectedFormulae = [];
+            clearProgress();
+            document.getElementById('results').classList.add('hidden');
+            document.getElementById('welcome').classList.remove('hidden');
+            document.getElementById('studentName').value = '';
+        }
+
+        // Enter key support
+        document.getElementById('answer').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') nextQuestion();
+        });
+        
+        document.getElementById('studentName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') showFormulaSelector();
+        });
+    </script>
+</body>
+</html>
